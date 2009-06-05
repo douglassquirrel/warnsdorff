@@ -1,7 +1,7 @@
 import tour
 import unittest
 
-class TestKnight(unittest.TestCase):
+class KnightTest(unittest.TestCase):
     def setUp(self):
         self.square21 = MockSquare(x = 2, y = 1, has_nbrs = True)
         self.rule = MockRule(new_location = self.square21, tiebreak = False)        

@@ -1,7 +1,7 @@
 import tour
 import unittest
 
-class TestGenerator(unittest.TestCase):
+class GeneratorTest(unittest.TestCase):
     def testWriteAndMove(self):
         out = MockFile()
         knight = MockKnight(moves = 3)
