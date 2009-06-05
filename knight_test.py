@@ -33,6 +33,16 @@ class TestKnight(unittest.TestCase):
         knight = tour.Knight(location = location, initial_rule = self.rule)
         self.assertTrue(knight.move())
         
+    def testMoveInvokesRuleOnCurrentSquare(self):
+        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        out = MockFile()
+
+        knight = tour.Knight(location = location, initial_rule = self.rule)
+        knight.move()
+        knight.write_current_data(out)
+
+        self.assertEquals(location, self.rule.invoked_on) 
+        
     def testMoveUpdatesLocation(self):
         location = MockSquare(x = 0, y = 0, has_nbrs = True)
         out = MockFile()
@@ -41,7 +51,7 @@ class TestKnight(unittest.TestCase):
         knight.move()
         knight.write_current_data(out)
 
-        self.assertEquals("{'square':(2,1), 'tiebreak':False}", out.s)        
+        self.assertEquals("{'square':(2,1), 'tiebreak':False}", out.s)  
         
     def testMoveUpdatesRule(self):
         location = MockSquare(x = 0, y = 0, has_nbrs = True)
