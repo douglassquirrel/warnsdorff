@@ -4,10 +4,13 @@ class Generator:
         self.knight = knight
 
     def run(self, out):
+        out.write("tour=[")
         while True:
             self.knight.write_current_data(out)
+            out.write(",")
             if (self.knight.move() == CANNOT_MOVE):
                 break
+        out.write("]")
 
 class Knight:
     def __init__(self, location, initial_rule):
