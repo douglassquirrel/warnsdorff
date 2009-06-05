@@ -22,5 +22,4 @@ class Knight:
         if (self.location.has_no_neighbours()):
             return False
         (self.location, self.rule, self.tiebreak) = self.rule.invoke(square = self.location)
-
         return True
