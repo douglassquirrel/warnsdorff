@@ -62,8 +62,23 @@ class Board:
     def __init__(self, dim):
         self.dim = dim
         self.squares = [[Square(self, x, y) for y in range(0, dim)] for x in range(0, dim)]
+        self.directions = [Direction(number=1, x=1,  y=-2), \
+                           Direction(number=2, x=2,  y=-1), \
+                           Direction(number=3, x=2,  y=1 ), \
+                           Direction(number=4, x=1,  y=2 ), \
+                           Direction(number=5, x=-1, y=2 ), \
+                           Direction(number=6, x=-2, y=1 ), \
+                           Direction(number=7, x=-2, y=-1), \
+                           Direction(number=8, x=-1, y=-2)]
     def get_square_at(self, x, y):
         return self.squares[x][y] if (x in range(0, self.dim) and y in range(0, self.dim)) else None
     def get_unvisited_neighbours(self, square):
-        return [{"direction":3, "square":self.get_square_at(x=2, y=1)}, \
-                {"direction":4, "square":self.get_square_at(x=1, y=2)}]
+        return filter(lambda x : not x["square"].visited, self.get_neighbours(square))
+    def get_neighbours(self, square):
+        return [{"direction":d.number, "square":d.apply(square)} for d in self.directions if d.apply(square)]
+
+class Direction:
+    def __init__(self, number, x, y):
+        (self.number, self.x, self.y) = (number, x, y)
+    def apply(self, square):
+        return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
