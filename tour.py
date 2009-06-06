@@ -1,3 +1,4 @@
+import config
 import sys
 
 def get_mins(L, scorer):
@@ -88,8 +89,9 @@ class Direction:
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
 
 if __name__ == '__main__':
-    board = Board(dim = int(sys.argv[1]))
-    rule = Rule(ordering = "12345678", switch_square = None, next_rule = None)
-    knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rule)
+    dim = int(sys.argv[1])
+    board = Board(dim = dim)
+    rules = config.get_rules(m = dim, board = board)
+    knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rules[0])
     generator = Generator(knight = knight)
     generator.run(out = sys.stdout)
