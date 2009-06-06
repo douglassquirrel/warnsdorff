@@ -22,6 +22,7 @@ class SquareTest(unittest.TestCase):
         self.assertFalse(self.square12.equals(self.square24))
         self.assertFalse(self.square12.equals(self.square13))
         self.assertFalse(self.square12.equals(self.square32))
+        self.assertFalse(self.square12.equals(None))
 
     def testIsUnvisitedByDefault(self):
         self.assertFalse(self.square12.visited)
@@ -40,15 +41,15 @@ class SquareTest(unittest.TestCase):
         
     def testPicksNeighbourWithoutTiebreak(self):
         choice = self.square32.pick_neighbour(lambda x : x["direction"], None)
-        self.assertEquals((self.square13, False), choice)
+        self.assertEquals([self.square13, False], choice)
         choice = self.square32.pick_neighbour(lambda x : -x["direction"], None)
-        self.assertEquals((self.square24, False), choice)
+        self.assertEquals([self.square24, False], choice)
 
     def testPicksNeighbourWithTiebreak(self):
         choice = self.square32.pick_neighbour(lambda x : x["square"].degree(), lambda x : x["direction"])
-        self.assertEquals((self.square13, True), choice)
+        self.assertEquals([self.square13, True], choice)
         choice = self.square32.pick_neighbour(lambda x : x["square"].degree(), lambda x : -x["direction"])
-        self.assertEquals((self.square24, True), choice)
+        self.assertEquals([self.square24, True], choice)
 
 class MockBoard:
     def __init__(self):

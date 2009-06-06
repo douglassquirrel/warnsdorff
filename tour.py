@@ -1,20 +1,23 @@
-CANNOT_MOVE = False
+import sys
+
 def get_mins(L, scorer):
     minimum = min(map(scorer, L))
     return [item for item in L if scorer(item) == minimum]
 
+CANNOT_MOVE = False
 class Generator:
     def __init__(self, knight):
         self.knight = knight
+        knight.location.visited = True
 
     def run(self, out):
-        out.write("tour=[")
+        out.write("tour = [ \\\n")
         while True:
             self.knight.write_current_data(out)
-            out.write(",")
+            out.write(", \\\n")
             if (self.knight.move() == CANNOT_MOVE):
                 break
-        out.write("]")
+        out.write("]\n")
 
 class Knight:
     def __init__(self, location, initial_rule):
@@ -26,7 +29,8 @@ class Knight:
     def move(self):
         if (self.location.has_no_neighbours()):
             return False
-        (self.location, self.rule, self.tiebreak) = self.rule.invoke(square = self.location)
+        (self.location, self.tiebreak, self.rule) = self.rule.invoke(square = self.location)
+        self.location.visited = True
         return True
 
 class Rule:
@@ -44,7 +48,7 @@ class Square:
         (self.board, self.x, self.y) = (board, x, y)
         self.visited = False
     def equals(self, square):
-        return (self.x == square.x and self.y == square.y)
+        return (self.x == square.x and self.y == square.y) if square else False
     def __str__(self):
         return "(%d,%d)" % (self.x, self.y)
     def degree(self):
@@ -54,9 +58,9 @@ class Square:
     def pick_neighbour(self, scorer, tiebreaker):
         candidates = get_mins(self.board.get_unvisited_neighbours(self), scorer)
         if (1 == len(candidates)):
-            return (candidates[0]["square"], False)
+            return [candidates[0]["square"], False]
         else:
-            return (get_mins(candidates, tiebreaker)[0]["square"], True)
+            return [get_mins(candidates, tiebreaker)[0]["square"], True]
 
 class Board:
     def __init__(self, dim):
@@ -82,3 +86,10 @@ class Direction:
         (self.number, self.x, self.y) = (number, x, y)
     def apply(self, square):
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
+
+if __name__ == '__main__':
+    board = Board(dim = int(sys.argv[1]))
+    rule = Rule(ordering = "12345678", switch_square = None, next_rule = None)
+    knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rule)
+    generator = Generator(knight = knight)
+    generator.run(out = sys.stdout)

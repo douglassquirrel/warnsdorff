@@ -32,6 +32,12 @@ class KnightTest(unittest.TestCase):
         location = MockSquare(x = 0, y = 0, has_nbrs = True)
         knight = tour.Knight(location = location, initial_rule = self.rule)
         self.assertTrue(knight.move())
+
+    def testMoveMarksSquareVisited(self):
+        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        knight = tour.Knight(location = location, initial_rule = self.rule)
+        knight.move()
+        self.assertTrue(self.square21.visited)
         
     def testMoveInvokesRuleOnCurrentSquare(self):
         location = MockSquare(x = 0, y = 0, has_nbrs = True)
@@ -88,9 +94,8 @@ class KnightTest(unittest.TestCase):
         
 class MockSquare:
     def __init__(self, x, y, has_nbrs):
-        self.x = x
-        self.y = y
-        self.has_nbrs = has_nbrs
+        (self.x, self.y, self.has_nbrs) = (x, y, has_nbrs)
+        self.visited = False
     def __str__(self):
         return "(%d,%d)" % (self.x, self.y)
     def has_no_neighbours(self):
@@ -103,7 +108,7 @@ class MockRule:
         self.tiebreak = tiebreak
     def invoke(self, square):
         self.invoked_on = square
-        return [self.new_location, self.next_rule, self.tiebreak] 
+        return [self.new_location, self.tiebreak, self.next_rule] 
 
 class MockFile:
     def __init__(self):
