@@ -21,7 +21,7 @@ class Knight:
         (self.location, self.rule, self.tiebreak) = (location, initial_rule, False)
 
     def write_current_data(self, out):
-        out.write("{'square':%s, 'tiebreak':%s}" % (self.location.serialise(), self.tiebreak))
+        out.write("{'square':%s, 'tiebreak':%s}" % (str(self.location), self.tiebreak))
 
     def move(self):
         if (self.location.has_no_neighbours()):
@@ -45,7 +45,7 @@ class Square:
         self.visited = False
     def equals(self, square):
         return (self.x == square.x and self.y == square.y)
-    def serialise(self):
+    def __str__(self):
         return "(%d,%d)" % (self.x, self.y)
     def degree(self):
         return len(self.board.get_unvisited_neighbours(self))
@@ -57,3 +57,13 @@ class Square:
             return (candidates[0]["square"], False)
         else:
             return (get_mins(candidates, tiebreaker)[0]["square"], True)
+
+class Board:
+    def __init__(self, dim):
+        self.dim = dim
+        self.squares = [[Square(self, x, y) for y in range(0, dim)] for x in range(0, dim)]
+    def get_square_at(self, x, y):
+        return self.squares[x][y] if (x in range(0, self.dim) and y in range(0, self.dim)) else None
+    def get_unvisited_neighbours(self, square):
+        return [{"direction":3, "square":self.get_square_at(x=2, y=1)}, \
+                {"direction":4, "square":self.get_square_at(x=1, y=2)}]

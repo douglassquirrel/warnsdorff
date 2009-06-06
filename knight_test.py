@@ -91,7 +91,7 @@ class MockSquare:
         self.x = x
         self.y = y
         self.has_nbrs = has_nbrs
-    def serialise(self):
+    def __str__(self):
         return "(%d,%d)" % (self.x, self.y)
     def has_no_neighbours(self):
         return (not self.has_nbrs)

@@ -14,8 +14,8 @@ class SquareTest(unittest.TestCase):
                           self.square32 : [{"direction":2, "square":self.square13}, {"direction":4, "square":self.square24}]}
     
     def testSerialise(self):
-        self.assertEquals("(1,2)", self.square12.serialise())
-        self.assertEquals("(2,4)", self.square24.serialise())
+        self.assertEquals("(1,2)", str(self.square12))
+        self.assertEquals("(2,4)", str(self.square24))
 
     def testEquals(self):
         self.assertTrue( self.square12.equals(self.square12))
