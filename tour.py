@@ -12,13 +12,11 @@ class Generator:
         knight.location.visited = True
 
     def run(self, out):
-        out.write("tour = [ \\\n")
         while True:
             self.knight.write_current_data(out)
-            out.write(", \\\n")
+            out.write("\n")
             if (self.knight.move() == CANNOT_MOVE):
                 break
-        out.write("]\n")
 
 class Knight:
     def __init__(self, location, initial_rule):

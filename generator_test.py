@@ -12,7 +12,7 @@ class GeneratorTest(unittest.TestCase):
         knight = MockKnight(moves = 3)
         generator = tour.Generator(knight = knight)
         generator.run(out = out)
-        self.assertEquals("tour = [ \\\n3, \\\n2, \\\n1, \\\n]\n", out.s)
+        self.assertEquals("3\n2\n1\n", out.s)
 
 class MockFile:
     def __init__(self):
