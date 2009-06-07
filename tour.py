@@ -13,7 +13,7 @@ class Generator:
         knight.location.visited = True
 
     def run(self, out):
-        for visited in itertools.count():
+        for visited in itertools.count(1):
             self.knight.write_current_data(out)
             out.write("\n")
             if (self.knight.move() == CANNOT_MOVE):

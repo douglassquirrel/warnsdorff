@@ -3,6 +3,7 @@ import unittest
 
 class FunctionalTest(unittest.TestCase):
     def testCompletesForAllBoardTypes(self):
+        self.assertCompletesForSize(25)
         self.assertCompletesForSize(112)
         self.assertCompletesForSize(113)
         self.assertCompletesForSize(114)
