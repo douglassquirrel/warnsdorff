@@ -50,14 +50,19 @@ class Square:
     def __init__(self, board, x, y):
         (self.board, self.x, self.y) = (board, x, y)
         self.visited = False
+
     def equals(self, square):
         return (self.x == square.x and self.y == square.y) if square else False
+
     def __str__(self):
         return "(%d,%d)" % (self.x, self.y)
+
     def degree(self):
         return len(self.board.get_unvisited_neighbours(self))
+
     def has_no_neighbours(self):
         return (0 == self.degree())
+
     def pick_neighbour(self, scorer, tiebreaker):
         candidates = get_mins(self.board.get_unvisited_neighbours(self), scorer)
         return [candidates[0]["square"], False] if 1 == len(candidates) \
@@ -75,16 +80,20 @@ class Board:
                            Direction(number=6, x=1,  y=-2), \
                            Direction(number=7, x=-1, y=-2), \
                            Direction(number=8, x=-2, y=-1)]
+
     def get_square_at(self, x, y):
         return self.squares[x-1][y-1] if (x in range(1, self.dim+1) and y in range(1, self.dim+1)) else None
+
     def get_unvisited_neighbours(self, square):
         return filter(lambda x : not x["square"].visited, self.get_neighbours(square))
+
     def get_neighbours(self, square):
         return [{"direction":d.number, "square":d.apply(square)} for d in self.directions if d.apply(square)]
 
 class Direction:
     def __init__(self, number, x, y):
         (self.number, self.x, self.y) = (number, x, y)
+
     def apply(self, square):
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
 
