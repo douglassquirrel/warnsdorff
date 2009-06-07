@@ -1,4 +1,5 @@
 import config
+import itertools
 import sys
 
 def get_mins(L, scorer):
@@ -12,9 +13,7 @@ class Generator:
         knight.location.visited = True
 
     def run(self, out):
-        visited = 0
-        while True:
-            visited += 1
+        for visited in itertools.count():
             self.knight.write_current_data(out)
             out.write("\n")
             if (self.knight.move() == CANNOT_MOVE):
@@ -31,8 +30,8 @@ class Knight:
     def move(self):
         if (self.location.has_no_neighbours()):
             return False
-        self.rule = self.rule.transition(square = self.location)
-        (self.location, self.tiebreak) = self.rule.apply_to(square = self.location)
+        self.rule = self.rule.transition(self.location)
+        (self.location, self.tiebreak) = self.rule.apply_to(self.location)
         self.location.visited = True
         return True
 
@@ -61,10 +60,8 @@ class Square:
         return (0 == self.degree())
     def pick_neighbour(self, scorer, tiebreaker):
         candidates = get_mins(self.board.get_unvisited_neighbours(self), scorer)
-        if (1 == len(candidates)):
-            return [candidates[0]["square"], False]
-        else:
-            return [get_mins(candidates, tiebreaker)[0]["square"], True]
+        return [candidates[0]["square"], False] if 1 == len(candidates) \
+          else [get_mins(candidates, tiebreaker)[0]["square"], True]
 
 class Board:
     def __init__(self, dim):
@@ -92,10 +89,10 @@ class Direction:
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
 
 def run(dim, out):
-    board = Board(dim = dim)
+    board = Board(dim)
     rules = config.get_rules(m = dim, board = board)
     knight = Knight(location = board.get_square_at(x = 1, y = 1), initial_rule = rules[0])
-    generator = Generator(knight = knight)
+    generator = Generator(knight)
     return generator.run(out)
 
 if __name__ == '__main__':
