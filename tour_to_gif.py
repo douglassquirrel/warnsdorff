@@ -3,10 +3,13 @@ import ImageDraw
 import subprocess
 import sys
 
+def flip(p):
+    return (p[1], p[0])
+
 n = int(sys.argv[1])
-im = Image.new("RGB", (n, n))
+im = Image.new("RGB", (n+1, n+1))
 draw = ImageDraw.Draw(im)
-draw.rectangle((0, 0, n, n), fill="white")
+draw.rectangle((0, 0, n+1, n+1), fill="white")
 
 files = []
 i=0
@@ -20,8 +23,8 @@ while True:
     if not line:
         break
     data = eval(line)
-    fill = "red" if data["tiebreak"] else "blue"
-    draw.point(data["square"], fill = fill)
+    draw.point(flip(data["square"]), \
+               fill = "red" if data["tiebreak"] else "blue")
 
 command = ["convert", "-delay", "1", "-loop", "0"]
 command.extend(files)
