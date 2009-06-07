@@ -68,14 +68,14 @@ class Board:
     def __init__(self, dim):
         self.dim = dim
         self.squares = [[Square(self, x, y) for y in range(0, dim)] for x in range(0, dim)]
-        self.directions = [Direction(number=1, x=1,  y=-2), \
-                           Direction(number=2, x=2,  y=-1), \
-                           Direction(number=3, x=2,  y=1 ), \
-                           Direction(number=4, x=1,  y=2 ), \
-                           Direction(number=5, x=-1, y=2 ), \
-                           Direction(number=6, x=-2, y=1 ), \
-                           Direction(number=7, x=-2, y=-1), \
-                           Direction(number=8, x=-1, y=-2)]
+        self.directions = [Direction(number=1, x=-2, y=1 ), \
+                           Direction(number=2, x=-1, y=2 ), \
+                           Direction(number=3, x=1,  y=2 ), \
+                           Direction(number=4, x=2,  y=1 ), \
+                           Direction(number=5, x=2,  y=-1), \
+                           Direction(number=6, x=1,  y=-2), \
+                           Direction(number=7, x=-1, y=-2), \
+                           Direction(number=8, x=-2, y=-1)]
     def get_square_at(self, x, y):
         return self.squares[x][y] if (x in range(0, self.dim) and y in range(0, self.dim)) else None
     def get_unvisited_neighbours(self, square):

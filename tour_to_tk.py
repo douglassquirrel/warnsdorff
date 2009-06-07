@@ -5,13 +5,17 @@ import subprocess
 import sys
 import Tkinter
 
+def flip(p):
+    return (p[1], p[0])
+
 def next_frame(label, im, draw):
     line = sys.stdin.readline().rstrip()
     if not line:
         return
     data = eval(line)
     fill = "red" if data["tiebreak"] else "blue"
-    draw.point(data["square"], fill = fill)
+    draw.point(flip(data["square"]), \
+               fill = "red" if data["tiebreak"] else "blue")
 
     frame = ImageTk.PhotoImage(im) 
     label.config(image=frame)

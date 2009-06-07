@@ -19,29 +19,29 @@ class BoardTest(unittest.TestCase):
         self.assertEquals(None, board.get_square_at(x=-9, y=99))
     def testReturnsUnvisitedNeighbours(self):
         board = tour.Board(10)
-        self.assertEquals([{"direction":3, "square":board.get_square_at(x=2, y=1)}, \
-                           {"direction":4, "square":board.get_square_at(x=1, y=2)}],
+        self.assertEquals([{"direction":3, "square":board.get_square_at(x=1, y=2)}, \
+                           {"direction":4, "square":board.get_square_at(x=2, y=1)}],
                           board.get_unvisited_neighbours(board.get_square_at(x=0, y=0)))
-        self.assertEquals([{"direction":1, "square":board.get_square_at(x=4, y=1)}, \
-                           {"direction":2, "square":board.get_square_at(x=5, y=2)}, \
-                           {"direction":3, "square":board.get_square_at(x=5, y=4)}, \
-                           {"direction":4, "square":board.get_square_at(x=4, y=5)}, \
-                           {"direction":5, "square":board.get_square_at(x=2, y=5)}, \
-                           {"direction":6, "square":board.get_square_at(x=1, y=4)}, \
-                           {"direction":7, "square":board.get_square_at(x=1, y=2)}, \
-                           {"direction":8, "square":board.get_square_at(x=2, y=1)}], \
+        self.assertEquals([{"direction":1, "square":board.get_square_at(x=1, y=4)}, \
+                           {"direction":2, "square":board.get_square_at(x=2, y=5)}, \
+                           {"direction":3, "square":board.get_square_at(x=4, y=5)}, \
+                           {"direction":4, "square":board.get_square_at(x=5, y=4)}, \
+                           {"direction":5, "square":board.get_square_at(x=5, y=2)}, \
+                           {"direction":6, "square":board.get_square_at(x=4, y=1)}, \
+                           {"direction":7, "square":board.get_square_at(x=2, y=1)}, \
+                           {"direction":8, "square":board.get_square_at(x=1, y=2)}], \
                           board.get_unvisited_neighbours(board.get_square_at(x=3, y=3)))
 
-        board.get_square_at(x=1, y=2).visited = True
-        self.assertEquals([{"direction":3, "square":board.get_square_at(x=2, y=1)}], \
+        board.get_square_at(x=2, y=1).visited = True
+        self.assertEquals([{"direction":3, "square":board.get_square_at(x=1, y=2)}], \
                           board.get_unvisited_neighbours(board.get_square_at(x=0, y=0)))
-        self.assertEquals([{"direction":1, "square":board.get_square_at(x=4, y=1)}, \
-                           {"direction":2, "square":board.get_square_at(x=5, y=2)}, \
-                           {"direction":3, "square":board.get_square_at(x=5, y=4)}, \
-                           {"direction":4, "square":board.get_square_at(x=4, y=5)}, \
-                           {"direction":5, "square":board.get_square_at(x=2, y=5)}, \
-                           {"direction":6, "square":board.get_square_at(x=1, y=4)}, \
-                           {"direction":8, "square":board.get_square_at(x=2, y=1)}], \
+        self.assertEquals([{"direction":1, "square":board.get_square_at(x=1, y=4)}, \
+                           {"direction":2, "square":board.get_square_at(x=2, y=5)}, \
+                           {"direction":3, "square":board.get_square_at(x=4, y=5)}, \
+                           {"direction":4, "square":board.get_square_at(x=5, y=4)}, \
+                           {"direction":5, "square":board.get_square_at(x=5, y=2)}, \
+                           {"direction":6, "square":board.get_square_at(x=4, y=1)}, \
+                           {"direction":8, "square":board.get_square_at(x=1, y=2)}], \
                           board.get_unvisited_neighbours(board.get_square_at(x=3, y=3)))
 
 if __name__ == '__main__':
