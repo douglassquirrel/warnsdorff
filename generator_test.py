@@ -14,6 +14,12 @@ class GeneratorTest(unittest.TestCase):
         generator.run(out = out)
         self.assertEquals("3\n2\n1\n", out.s)
 
+    def testCountsSquaresVisited(self):
+        out = MockFile()
+        knight = MockKnight(moves = 3)
+        generator = tour.Generator(knight = knight)
+        self.assertEquals(3, generator.run(out = out))
+        
 class MockFile:
     def __init__(self):
         self.s = ""

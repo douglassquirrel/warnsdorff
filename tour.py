@@ -12,11 +12,14 @@ class Generator:
         knight.location.visited = True
 
     def run(self, out):
+        visited = 0
         while True:
+            visited += 1
             self.knight.write_current_data(out)
             out.write("\n")
             if (self.knight.move() == CANNOT_MOVE):
                 break
+        return visited
 
 class Knight:
     def __init__(self, location, initial_rule):
@@ -86,10 +89,13 @@ class Direction:
     def apply(self, square):
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
 
-if __name__ == '__main__':
-    dim = int(sys.argv[1])
+def run(dim, out):
     board = Board(dim = dim)
     rules = config.get_rules(m = dim, board = board)
     knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rules[0])
     generator = Generator(knight = knight)
-    generator.run(out = sys.stdout)
+    return generator.run(out)
+
+if __name__ == '__main__':
+    run(dim = int(sys.argv[1]), out = sys.stdout)
+
