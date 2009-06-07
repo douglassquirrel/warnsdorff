@@ -7,14 +7,6 @@ class KnightTest(unittest.TestCase):
         self.rule = MockRule(new_location = self.square21, tiebreak = False)        
 
     def testWritesCurrentData(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
-        out = MockFile()
-
-        knight = tour.Knight(location = location, initial_rule = self.rule)
-        knight.write_current_data(out)
-
-        self.assertEquals("{'square':(0,0), 'tiebreak':False}", out.s)
-
         location = MockSquare(x = 1, y = 1, has_nbrs = True)
         out = MockFile()
 
@@ -23,24 +15,32 @@ class KnightTest(unittest.TestCase):
 
         self.assertEquals("{'square':(1,1), 'tiebreak':False}", out.s)
 
+        location = MockSquare(x = 2, y = 2, has_nbrs = True)
+        out = MockFile()
+
+        knight = tour.Knight(location = location, initial_rule = self.rule)
+        knight.write_current_data(out)
+
+        self.assertEquals("{'square':(2,2), 'tiebreak':False}", out.s)
+
     def testMoveReturnsFalseIfDone(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = False)
+        location = MockSquare(x = 1, y = 1, has_nbrs = False)
         knight = tour.Knight(location = location, initial_rule = self.rule)
         self.assertFalse(knight.move())
 
     def testMovesWhenPossible(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
         knight = tour.Knight(location = location, initial_rule = self.rule)
         self.assertTrue(knight.move())
 
     def testMoveMarksSquareVisited(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
         knight = tour.Knight(location = location, initial_rule = self.rule)
         knight.move()
         self.assertTrue(self.square21.visited)
         
     def testMoveInvokesRuleOnCurrentSquare(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
         out = MockFile()
 
         knight = tour.Knight(location = location, initial_rule = self.rule)
@@ -50,7 +50,7 @@ class KnightTest(unittest.TestCase):
         self.assertEquals(location, self.rule.invoked_on) 
         
     def testMoveUpdatesLocation(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
         out = MockFile()
 
         knight = tour.Knight(location = location, initial_rule = self.rule)
@@ -60,17 +60,18 @@ class KnightTest(unittest.TestCase):
         self.assertEquals("{'square':(2,1), 'tiebreak':False}", out.s)  
         
     def testMoveUpdatesRule(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
-        self.square40 = MockSquare(x = 4, y = 0, has_nbrs = True)
-        rule2 = MockRule(new_location = self.square40, tiebreak = False)
-        rule2.next_rule = self.rule
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
+        square41 = MockSquare(x = 4, y = 1, has_nbrs = True)
+        rule2 = MockRule(new_location = square41, tiebreak = False)
+        rule2.next_rule = rule2
         knight = tour.Knight(location = location, initial_rule = rule2)
 
         out = MockFile()
         knight.move()
         knight.write_current_data(out)
-        self.assertEquals("{'square':(4,0), 'tiebreak':False}", out.s)
+        self.assertEquals("{'square':(4,1), 'tiebreak':False}", out.s)
 
+        rule2.next_rule = self.rule
         out = MockFile()
         knight.move()
         knight.write_current_data(out)
@@ -82,9 +83,9 @@ class KnightTest(unittest.TestCase):
         self.assertEquals("{'square':(2,1), 'tiebreak':False}", out.s)
 
     def testMoveUpdatesTiebreak(self):
-        location = MockSquare(x = 0, y = 0, has_nbrs = True)
-        self.square33 = MockSquare(x = 3, y = 3, has_nbrs = True)
-        rule2 = MockRule(new_location = self.square33, tiebreak = True)
+        location = MockSquare(x = 1, y = 1, has_nbrs = True)
+        square33 = MockSquare(x = 3, y = 3, has_nbrs = True)
+        rule2 = MockRule(new_location = square33, tiebreak = True)
         knight = tour.Knight(location = location, initial_rule = rule2)
 
         out = MockFile()
@@ -106,9 +107,11 @@ class MockRule:
         self.new_location = new_location
         self.next_rule = self
         self.tiebreak = tiebreak
-    def invoke(self, square):
+    def apply_to(self, square):
         self.invoked_on = square
-        return [self.new_location, self.tiebreak, self.next_rule] 
+        return [self.new_location, self.tiebreak]
+    def transition(self, square):
+        return self.next_rule
 
 class MockFile:
     def __init__(self):

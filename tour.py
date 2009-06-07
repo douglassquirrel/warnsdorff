@@ -31,19 +31,21 @@ class Knight:
     def move(self):
         if (self.location.has_no_neighbours()):
             return False
-        (self.location, self.tiebreak, self.rule) = self.rule.invoke(square = self.location)
+        self.rule = self.rule.transition(square = self.location)
+        (self.location, self.tiebreak) = self.rule.apply_to(square = self.location)
         self.location.visited = True
         return True
 
 class Rule:
     def __init__(self, ordering, switch_square, next_rule):
         (self.ordering, self.switch_square, self.next_rule) = (ordering, switch_square, next_rule)
+
+    def transition(self, square):
+        return self.next_rule if (square.equals(self.switch_square)) else self
     
-    def invoke(self, square):
-        result = square.pick_neighbour(lambda x : x["square"].degree(), \
-                                       lambda x : self.ordering.find(str(x["direction"])))
-        result.append(self.next_rule if (result[0].equals(self.switch_square)) else self)
-        return result
+    def apply_to(self, square):
+        return square.pick_neighbour(lambda x : x["square"].degree(), \
+                                     lambda x : self.ordering.find(str(x["direction"])))
 
 class Square:
     def __init__(self, board, x, y):
