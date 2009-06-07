@@ -8,16 +8,23 @@ class RuleTest(unittest.TestCase):
         self.square.neighbour = self.new_square
         self.square.tiebreak = False
 
-    def testSwitchesToNewRuleOnSwitchSquare(self):
-        rule2 = tour.Rule(ordering = "12345678", switch_square = self.square, next_rule = None)
-        rule1 = tour.Rule(ordering = "12345678", switch_square = self.square, next_rule = rule2)
+    def testSwitchesToNewRuleWhenLandingOnSwitchSquare(self):
+        rule2 = tour.Rule(ordering = "12345678", switch_square = None, next_rule = None)
+        rule1 = tour.Rule(ordering = "12345678", switch_square = self.new_square, next_rule = rule2)
         (s, tiebreak, new_rule) = rule1.invoke(self.square)
         self.assertEquals(rule2, new_rule)
 
     def testDoesNotSwitchRulesIfNotOnSwitchSquare(self):
         switch_square = MockSquare(x = 5, y = 5)
-        rule2 = tour.Rule(ordering = "12345678", switch_square = switch_square, next_rule = None)
+        rule2 = tour.Rule(ordering = "12345678", switch_square = None, next_rule = None)
         rule1 = tour.Rule(ordering = "12345678", switch_square = switch_square, next_rule = rule2)
+        (s, tiebreak, new_rule) = rule1.invoke(self.square)
+        self.assertEquals(rule1, new_rule)
+
+    def testDoesNotSwitchRulesIfLeavingSwitchSquare(self):
+        switch_square = MockSquare(x = 5, y = 5)
+        rule2 = tour.Rule(ordering = "12345678", switch_square = None, next_rule = None)
+        rule1 = tour.Rule(ordering = "12345678", switch_square = self.square, next_rule = rule2)
         (s, tiebreak, new_rule) = rule1.invoke(self.square)
         self.assertEquals(rule1, new_rule)
 

@@ -1,7 +1,7 @@
 X Functional test script
 X flip axes
 change rule before landing on switch square
-Use 1-based row and column indices
+X Use 1-based row and column indices
 ----------------------
 move directions to config.py
 Unify and unit-test tour_to_xx.py

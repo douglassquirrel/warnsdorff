@@ -42,7 +42,7 @@ class Rule:
     def invoke(self, square):
         result = square.pick_neighbour(lambda x : x["square"].degree(), \
                                        lambda x : self.ordering.find(str(x["direction"])))
-        result.append(self.next_rule if (square.equals(self.switch_square)) else self)
+        result.append(self.next_rule if (result[0].equals(self.switch_square)) else self)
         return result
 
 class Square:
