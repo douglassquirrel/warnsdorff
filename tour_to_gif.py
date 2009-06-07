@@ -7,9 +7,9 @@ def flip(p):
     return (p[1], p[0])
 
 n = int(sys.argv[1])
-im = Image.new("RGB", (n, n))
+im = Image.new("RGB", (n+1, n+1))
 draw = ImageDraw.Draw(im)
-draw.rectangle((0, 0, n, n), fill="white")
+draw.rectangle((0, 0, n+1, n+1), fill="white")
 
 files = []
 i=0

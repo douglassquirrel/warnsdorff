@@ -1,5 +1,5 @@
 X Functional test script
-flip axes
+X flip axes
 change rule before landing on switch square
 Use 1-based row and column indices
 ----------------------

@@ -67,7 +67,7 @@ class Square:
 class Board:
     def __init__(self, dim):
         self.dim = dim
-        self.squares = [[Square(self, x, y) for y in range(0, dim)] for x in range(0, dim)]
+        self.squares = [[Square(self, x, y) for y in range(1, dim+1)] for x in range(1, dim+1)]
         self.directions = [Direction(number=1, x=-2, y=1 ), \
                            Direction(number=2, x=-1, y=2 ), \
                            Direction(number=3, x=1,  y=2 ), \
@@ -77,7 +77,7 @@ class Board:
                            Direction(number=7, x=-1, y=-2), \
                            Direction(number=8, x=-2, y=-1)]
     def get_square_at(self, x, y):
-        return self.squares[x][y] if (x in range(0, self.dim) and y in range(0, self.dim)) else None
+        return self.squares[x-1][y-1] if (x in range(1, self.dim+1) and y in range(1, self.dim+1)) else None
     def get_unvisited_neighbours(self, square):
         return filter(lambda x : not x["square"].visited, self.get_neighbours(square))
     def get_neighbours(self, square):
@@ -92,7 +92,7 @@ class Direction:
 def run(dim, out):
     board = Board(dim = dim)
     rules = config.get_rules(m = dim, board = board)
-    knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rules[0])
+    knight = Knight(location = board.get_square_at(x = 1, y = 1), initial_rule = rules[0])
     generator = Generator(knight = knight)
     return generator.run(out)
 
