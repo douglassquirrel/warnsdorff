@@ -1,9 +1,3 @@
-X Functional test script
-X flip axes
-change rule before landing on switch square
-X Use 1-based row and column indices
-----------------------
-move directions to config.py
 Unify and unit-test tour_to_xx.py
 Put dimension in output of tour.py and remove as input to tour_to_xx.py
 Report success or failure
