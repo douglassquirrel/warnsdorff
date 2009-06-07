@@ -28,8 +28,7 @@ class Knight:
     def move(self):
         if (self.location.has_no_neighbours()):
             return False
-        self.rule = self.rule.update_rule(square = self.location)
-        (self.location, self.tiebreak) = self.rule.invoke(square = self.location)
+        (self.location, self.tiebreak, self.rule) = self.rule.invoke(square = self.location)
         self.location.visited = True
         return True
 
@@ -38,15 +37,10 @@ class Rule:
         (self.ordering, self.switch_square, self.next_rule) = (ordering, switch_square, next_rule)
     
     def invoke(self, square):
-        return square.pick_neighbour(lambda x : x["square"].degree(), \
-                                     lambda x : self.ordering.find(str(x["direction"])))
-    
-    def update_rule(self, square):
-        if (not square.equals(self.switch_square)):
-            return self
-        else:
-            sys.stderr.write("Switching to ordering %s at %s\n" % (self.next_rule.ordering, self.switch_square))
-            return self.next_rule
+        result = square.pick_neighbour(lambda x : x["square"].degree(), \
+                                       lambda x : self.ordering.find(str(x["direction"])))
+        result.append(self.next_rule if (square.equals(self.switch_square)) else self)
+        return result
 
 class Square:
     def __init__(self, board, x, y):
@@ -70,17 +64,17 @@ class Square:
 class Board:
     def __init__(self, dim):
         self.dim = dim
-        self.squares = [[Square(self, x, y) for y in range(1, dim+1)] for x in range(1, dim+1)]
-        self.directions = [Direction(number=1, x=-2, y=1 ), \
-                           Direction(number=2, x=-1, y=2 ), \
-                           Direction(number=3, x=1,  y=2 ), \
-                           Direction(number=4, x=2,  y=1 ), \
-                           Direction(number=5, x=2,  y=-1), \
-                           Direction(number=6, x=1,  y=-2 ), \
-                           Direction(number=7, x=-1, y=-2), \
-                           Direction(number=8, x=-2, y=-1)]
+        self.squares = [[Square(self, x, y) for y in range(0, dim)] for x in range(0, dim)]
+        self.directions = [Direction(number=1, x=1,  y=-2), \
+                           Direction(number=2, x=2,  y=-1), \
+                           Direction(number=3, x=2,  y=1 ), \
+                           Direction(number=4, x=1,  y=2 ), \
+                           Direction(number=5, x=-1, y=2 ), \
+                           Direction(number=6, x=-2, y=1 ), \
+                           Direction(number=7, x=-2, y=-1), \
+                           Direction(number=8, x=-1, y=-2)]
     def get_square_at(self, x, y):
-        return self.squares[x-1][y-1] if (x in range(1, self.dim+1) and y in range(1, self.dim+1)) else None
+        return self.squares[x][y] if (x in range(0, self.dim) and y in range(0, self.dim)) else None
     def get_unvisited_neighbours(self, square):
         return filter(lambda x : not x["square"].visited, self.get_neighbours(square))
     def get_neighbours(self, square):
@@ -94,9 +88,8 @@ class Direction:
 
 if __name__ == '__main__':
     dim = int(sys.argv[1])
-    sys.stderr.write("Generating tour for board of size %d\n" % dim)
     board = Board(dim = dim)
     rules = config.get_rules(m = dim, board = board)
-    knight = Knight(location = board.get_square_at(x = 1, y = 1), initial_rule = rules[0])
+    knight = Knight(location = board.get_square_at(x = 0, y = 0), initial_rule = rules[0])
     generator = Generator(knight = knight)
     generator.run(out = sys.stdout)
