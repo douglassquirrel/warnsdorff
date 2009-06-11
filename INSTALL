@@ -1,0 +1,4 @@
+Requires Python, TKinter, Python Imaging Library, and Ming 
+
+To install all of these on Ubuntu Linux:
+sudo apt-get install python-tk python-imaging-tk python-ming
