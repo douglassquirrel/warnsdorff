@@ -4,26 +4,27 @@ import ImageTk
 import subprocess
 import sys
 import Tkinter
+import tour_stream
 
 def flip(p):
     return (p[1], p[0])
 
-def next_frame(label, im, draw):
-    line = sys.stdin.readline().rstrip()
-    if not line:
+def next_frame(stream, label, im, draw):
+    try:
+        datum = stream.next()
+    except StopIteration:
         return
-    data = eval(line)
-    fill = "red" if data["tiebreak"] else "blue"
-    draw.point(flip(data["square"]), \
-               fill = "red" if data["tiebreak"] else "blue")
+    draw.point(flip(datum["square"]), \
+               fill = "red" if datum["tiebreak"] else "blue")
 
     frame = ImageTk.PhotoImage(im) 
     label.config(image=frame)
     label.image = frame
     label.pack()   
-    label.master.after(1, next_frame, label, im, draw)
+    label.master.after(1, next_frame, stream, label, im, draw)
 
-n = int(sys.argv[1])
+stream = tour_stream.TourStream(sys.stdin)
+n = stream.dimension
 
 im = Image.new("RGB", (n+1, n+1))
 draw = ImageDraw.Draw(im)
@@ -33,5 +34,5 @@ root = Tkinter.Tk()
 frame = ImageTk.PhotoImage(im)
 label = Tkinter.Label(root, image=frame)
 label.pack()
-root.after(1, next_frame, label, im, draw)
+root.after(1, next_frame, stream, label, im, draw)
 root.mainloop()

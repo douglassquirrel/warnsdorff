@@ -98,6 +98,7 @@ class Direction:
         return square.board.get_square_at(x = square.x + self.x, y = square.y + self.y)
 
 def run(dim, out):
+    out.write("%d\n" % (dim,))
     board = Board(dim)
     rules = config.get_rules(m = dim, board = board)
     knight = Knight(location = board.get_square_at(x = 1, y = 1), initial_rule = rules[0])
