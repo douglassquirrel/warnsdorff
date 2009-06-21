@@ -16,7 +16,7 @@ n = stream.dimension
 blue_point = make_point(0, 0, 0xff)
 red_point = make_point(0xff, 0, 0)
 movie = ming.SWFMovie()
-movie.setDimension(n*2, n*2)
+movie.setDimension((n+1)*2, (n+1)*2)
 movie.setRate(128.0)
 
 for datum in stream:
