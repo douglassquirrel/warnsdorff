@@ -1,5 +1,9 @@
 import tour
+import time
 import unittest
+
+def now():
+    return int(time.time())
 
 class FunctionalTest(unittest.TestCase):
     def testCompletesForAllBoardTypes(self):
@@ -16,7 +20,11 @@ class FunctionalTest(unittest.TestCase):
 
     def assertCompletesForSize(self, size):
         print "Checking board of size %d" % (size,)
-        self.assertEquals(size*size, tour.run(size, DropOutput()))
+        start = now()
+        visited = tour.run(size, DropOutput())
+        finish = now()
+        print "Done in %d seconds" % (finish-start,)
+        self.assertEquals(size*size, visited)
 
 class DropOutput:
     def __init__(self):
