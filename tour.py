@@ -1,6 +1,7 @@
 import config
 import itertools
 import sys
+import time
 
 def get_mins(L, scorer):
     minimum = min(map(scorer, L))
@@ -105,6 +106,17 @@ def run(dim, out):
     generator = Generator(knight)
     return generator.run(out)
 
+def now():
+    return int(time.time())
+
 if __name__ == '__main__':
-    run(dim = int(sys.argv[1]), out = sys.stdout)
+    n = int(sys.argv[1])
+    sys.stderr.write("Generating tour for dimension %d\n" % (n,))
+    start = now()
+    visited = run(dim = int(sys.argv[1]), out = sys.stdout)
+    finish = now()
+    if (visited == n*n):
+        sys.stderr.write("SUCCESS - generated tour for dimension %d in %d seconds\n" %(n, finish-start))
+    else:
+        sys.stderr.write("FAILED - Only visited %d of %d squares in %d seconds\n" %(visited, n*n, finish-start))
 

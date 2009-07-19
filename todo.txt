@@ -1,7 +1,3 @@
-Unify and unit-test tour_to_xx.py
-  Use generator for input stream
-  Accept input from file or stdin
-Put dimension in output of tour.py and remove as input to tour_to_xx.py
 Report success or failure
 stderr logging including time to run
 Test on Windows [no pipes - use file]
