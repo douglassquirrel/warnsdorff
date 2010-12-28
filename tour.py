@@ -81,18 +81,15 @@ class Board:
                            Direction(number=6, x=1,  y=-2), \
                            Direction(number=7, x=-1, y=-2), \
                            Direction(number=8, x=-2, y=-1)]
-        self.neighbours = dict([(s, self.get_neighbours_long(s)) for r in self.squares for s in r])
+        self.neighbours = dict([(s, self.compute_neighbours(s)) for r in self.squares for s in r])
 
     def get_square_at(self, x, y):
         return self.squares[x-1][y-1] if (x in range(1, self.dim+1) and y in range(1, self.dim+1)) else None
 
     def get_unvisited_neighbours(self, square):
-        return filter(lambda x : not x["square"].visited, self.get_neighbours(square))
+        return filter(lambda x : not x["square"].visited, self.neighbours[square])
 
-    def get_neighbours(self, square):
-        return self.neighbours[square]
-
-    def get_neighbours_long(self, square):
+    def compute_neighbours(self, square):
 	return [{"direction":d.number, "square":d.apply(square)} for d in self.directions if d.apply(square)]
 
 class Direction:
