@@ -1,5 +1,3 @@
 Test on Windows [no pipes - use file]
 Write README
-Generate files for 0..1000
-Generate movies for 120..127 and 500
 Write web page
