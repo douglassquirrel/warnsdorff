@@ -1,4 +1,4 @@
-[Warnsdorff's Rule](http://warnsdorff.com) is a heuristic for finding knight's tours on chessboards. An [conjecture](https://github.com/douglassquirrel/warnsdorff/blob/master/5_Squirrel96.pdf?raw=true) by the original contributor of this code and [Paul Cull](http://eecs.oregonstate.edu/research/members/cull/index.html) is that Warnsdorff's rule, with suitable modifications, can give a knight's tour on any square board. You can use this program to generate tours according to this method on a square board of any size:
+[Warnsdorff's Rule](http://warnsdorff.com) is a heuristic for finding knight's tours on chessboards. A [conjecture](https://github.com/douglassquirrel/warnsdorff/blob/master/5_Squirrel96.pdf?raw=true) by the original contributor of this code and [Paul Cull](http://eecs.oregonstate.edu/research/members/cull/index.html) is that Warnsdorff's rule, with suitable modifications, can give a knight's tour on any square board. You can use this program to generate tours according to this method on a square board of any size:
 
 1. Download this project.
 2. Follow the instructions in the INSTALL file (installing Python and required libraries).
